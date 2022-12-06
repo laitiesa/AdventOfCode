@@ -27,13 +27,13 @@ S1 = None ## Part 1
 S2 = None ## Part 2
 with open(selectedInput) as f:
     for i in f:
-        for k in range(0,len(i),1):
+        for k in range(len(i)):
             if k >= 4:
                 S1 = set(i[k-4:k])
                 if len(S1) == 4:
                     print("Part 1: " + str(k))
                     break
-        for k in range(0,len(i),1):
+        for k in range(len(i)):
             if k >= 14:
                 S2 = set(i[k-14:k])
                 if len(S2) == 14:
