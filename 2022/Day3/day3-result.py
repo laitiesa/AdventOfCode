@@ -6,12 +6,10 @@ Created on Sat Dec  3 15:19:56 2022
 """
 
 import os
-user = os.path.expanduser('~')
-AoCDir = "/OneDrive/Tiedostot/AoC2022/2022/Day"
+cwd = os.getcwd()
 Day = 3
-
-test_input =  user + AoCDir + str(Day) + "/test-input-" + str(Day) + ".txt"
-real_input =  user + AoCDir + str(Day) + "/input-" + str(Day) + ".txt"
+test_input =  cwd + "/test-input-" + str(Day) + ".txt"
+real_input =  cwd + "/input-" + str(Day) + ".txt"
 
 
 selectedInput = None

@@ -8,10 +8,10 @@ Created on Thu Dec  1 14:29:27 2022
 """ AOC 2022 Day 1
 """
 import os
-user = os.path.expanduser('~')
-
-test_input = user + "/OneDrive/Tiedostot/AoC2022/Day1/test-input-1.txt"
-real_input = user + "/OneDrive/Tiedostot/AoC2022/Day1/input-1.txt"
+cwd = os.getcwd()
+Day = 1
+test_input =  cwd + "/test-input-" + str(Day) + ".txt"
+real_input =  cwd + "/input-" + str(Day) + ".txt"
 """
 Part 1
 """

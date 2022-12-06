@@ -6,11 +6,10 @@ Created on Tue Dec  6 07:47:13 2022
 """
 
 import os
-user = os.path.expanduser('~')
-AoCDir = "/OneDrive/Tiedostot/AdventOfCode/2022/Day"
+cwd = os.getcwd()
 Day = 6
-test_input =  user + AoCDir + str(Day) + "/test-input-" + str(Day) + ".txt"
-real_input =  user + AoCDir + str(Day) + "/input-" + str(Day) + ".txt"
+test_input =  cwd + "/test-input-" + str(Day) + ".txt"
+real_input =  cwd + "/input-" + str(Day) + ".txt"
 
 #from copy import deepcopy
 selectedInput = None
