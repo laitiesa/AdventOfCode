@@ -21,6 +21,9 @@ else:
 
 from collections import defaultdict
 
+
+
+### Part 1
 Sizes = defaultdict(int)
 trees = []
 
@@ -62,6 +65,8 @@ for i in range(len(trees)):
         elif int(trees[i][j]) > int(max([trees[k][j] for k in range(int(len(trees)))][0:i])):
             treecount += 1
 print("Part1: " + str(treecount))
+
+### Part 2
 
 trees3 = copy.deepcopy(trees)
 treescore = 0
@@ -110,13 +115,8 @@ for i in range(len(trees)):
             multi = multi * int(x)
             finalscore = multi
         trees3[i][j] = finalscore
+        if finalscore > treescore:
+            treescore = finalscore
         scenicscore = [0, 0, 0, 0]
 
-max_seen = 0
-for i in range(len(trees3)):
-    for j in range(len(trees3[i])):
-        if trees3[i][j] > max_seen:
-            max_seen = trees3[i][j]
-        else:
-            continue
-print("Part2: " + str(max_seen))
+print("Part2: " + str(treescore))
