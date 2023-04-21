@@ -7,13 +7,14 @@ Created on Sun Dec 11 11:37:25 2022
 
 import copy
 import os
+from functools import reduce
+import math
 cwd = os.getcwd()
 Day = 11
 test_input =  cwd + "/test-input-" + str(Day) + ".txt"
 real_input =  cwd + "/input-" + str(Day) + ".txt"
 
 from collections import defaultdict
-from math import floor
 selectedInput = None
 test = False
 
@@ -29,6 +30,19 @@ operations = {'+': lambda x, y: x + y,
               '*': lambda x, y: x * y,
               '/': lambda x, y: x / y}
 divisible = None
+divisibles = []
+
+def testAllPrime(alist):
+    AllPrime = True
+    for i in alist:
+        for j in range(2, i):
+            if (i%j) == 0:
+                AllPrime = False
+                break
+            else:
+                continue
+    return AllPrime
+
 with open(selectedInput) as f:
     for i in f:
             x = i.rstrip().split()
@@ -47,6 +61,7 @@ with open(selectedInput) as f:
                     
                 elif x[0] == 'Test:':
                     monkeys[curMonkey]['divisible'] = int(x[3])
+                    divisibles.append(int(x[3]))
                 elif x[1] == 'true:':
                     monkeys[curMonkey]['trueMonkey'] = x[-1]
                 elif x[1] == 'false:':
@@ -54,6 +69,8 @@ with open(selectedInput) as f:
 #for keys in monkeys:
     #print(keys, monkeys[keys])
 
+#print(divisibles)
+divisibles.sort()
 if test:
     cycles = 20
     for i in range(cycles):
@@ -73,7 +90,7 @@ if test:
             elif keys == '3':
                 #new = operations['+'](old, 3)
                 monkeys[keys]['items'] = [operations['+'](k, 3) for k in monkeys[keys]['items']]
-            monkeys[keys]['items'] = [floor(operations['/'](k, 3)) for k in monkeys[keys]['items']]
+            monkeys[keys]['items'] = [math.floor(operations['/'](k, 3)) for k in monkeys[keys]['items']]
             while len(monkeys[keys]['items']) > 0:
                 new = monkeys[keys]['items'].pop(0)
                 if new % monkeys[keys]['divisible'] == 0:
@@ -85,6 +102,7 @@ if test:
              #print("Round; ", i, monkeys[keys2]['items'])
     #for keys in monkeys:
         #print(keys, monkeys[keys]['seen'])
+    
 else:
     cycles = 20
     for i in range(cycles):
@@ -116,7 +134,7 @@ else:
             elif keys == '7':
                 
                 monkeys[keys]['items'] = [operations['+'](k, 6) for k in monkeys[keys]['items']]
-            monkeys[keys]['items'] = [floor(operations['/'](k, 3)) for k in monkeys[keys]['items']]
+            monkeys[keys]['items'] = [math.floor(operations['/'](k, 3)) for k in monkeys[keys]['items']]
             while len(monkeys[keys]['items']) != 0:
                 new = monkeys[keys]['items'].pop(0)
                 if new % monkeys[keys]['divisible'] == 0:
@@ -124,13 +142,14 @@ else:
                 else:
                     monkeys[monkeys[keys]['falseMonkey']]['items'].append(new)
 
-    seens = list()
-    for keys in monkeys:
+seens = list()
+for keys in monkeys:
         seens.append(monkeys[keys]['seen'])
         seens.sort(reverse=True)
 print("Part 1: " + str(seens[0]*seens[1]))
         
 ### Part 2
+divisibles = []
 monkeys = defaultdict(dict)
 with open(selectedInput) as f:
     for i in f:
@@ -149,18 +168,24 @@ with open(selectedInput) as f:
                     
                 elif x[0] == 'Test:':
                     monkeys[curMonkey]['divisible'] = int(x[3])
+                    divisibles.append(int(x[3]))
                 elif x[1] == 'true:':
                     monkeys[curMonkey]['trueMonkey'] = x[-1]
                 elif x[1] == 'false:':
                     monkeys[curMonkey]['falseMonkey'] = x[-1]
 
+divisibles.sort()
 cycles = 10000
 if test:
     for i in range(cycles):
         for keys in monkeys:
             monkeys[keys]['seen'] += len(monkeys[keys]['items'])
             
-            lcm = 13*17*19*23
+            if testAllPrime(divisibles):
+                lcm = reduce(lambda x, y: x * y, divisibles)
+            else:
+                lcm = reduce(lambda x, y: math.lcm(x, y), divisibles)
+                
             if keys == '0':
                 
                 monkeys[keys]['items'] = [operations['*'](k, 19) for k in monkeys[keys]['items']]
@@ -186,13 +211,18 @@ if test:
                 else:
                     monkeys[monkeys[keys]['falseMonkey']]['items'].append(new)
 
-    for keys in monkeys:
-        print(keys, monkeys[keys]['seen'])
+    #for keys in monkeys:
+        #print(keys, monkeys[keys]['seen'])
 else:
     for i in range(cycles):
         for keys in monkeys:
             monkeys[keys]['seen'] += len(monkeys[keys]['items'])
-            lcm = 5*13*7*19*2*11*17*3
+            
+            if testAllPrime(divisibles):
+                lcm = reduce(lambda x, y: x * y, divisibles)
+            else:
+                lcm = reduce(lambda x, y: math.lcm(x, y), divisibles)
+                
             if keys == '0':
                 
                 monkeys[keys]['items'] = [operations['*'](k, 11) for k in monkeys[keys]['items']]
@@ -234,8 +264,8 @@ else:
                 else:
                     monkeys[monkeys[keys]['falseMonkey']]['items'].append(new)
 
-    seens = list()
-    for keys in monkeys:
+seens = list()
+for keys in monkeys:
         seens.append(monkeys[keys]['seen'])
         seens.sort(reverse=True)
-    print("Part 2: " + str(seens[0]*seens[1]))
+print("Part 2: " + str(seens[0]*seens[1]))
